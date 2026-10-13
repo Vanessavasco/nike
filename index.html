@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Nike | Equipamiento deportivo para hombre, mujer y niños</title>
+  <meta name="description" content="Página demostrativa de Nike: calzado, ropa y accesorios deportivos para hombre, mujer y niños.">
+
+  <style>
+    /* ==========================================================
+       1. VARIABLES (colores y medidas reutilizables)
+       Cambiar un color aquí lo cambia en toda la página.
+       ========================================================== */
+    :root {
+      --negro: #000000;
+      --blanco: #ffffff;
+      --carmesi: #c8102e;        /* Rojo corporativo: fondos con texto blanco */
+      --carmesi-claro: #ff5468;  /* Rojo claro: texto sobre fondo negro */
+      --gris-claro: #f3f3f3;
+      --gris-medio: #595959;     /* Texto secundario (contraste AA sobre blanco) */
+      --radio: 6px;
+      --ancho-max: 1180px;
+    }
+
+    /* ==========================================================
+       2. ESTILOS BASE
+       ========================================================== */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: var(--negro);
+      background: var(--blanco);
+      line-height: 1.6;
+    }
+
+    img, svg { max-width: 100%; display: block; }
+    a { color: inherit; }
+
+    /* Contenedor que centra el contenido y limita su ancho */
+    .contenedor {
+      width: 100%;
+      max-width: var(--ancho-max);
+      margin: 0 auto;
+      padding: 0 1.25rem;
+    }
+
+    /* Foco visible para quien navega con teclado */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--carmesi);
+      outline-offset: 3px;
+    }
+
+    /* Enlace "saltar al contenido" (accesibilidad) */
+    .saltar-contenido {
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--carmesi);
+      color: var(--blanco);
+      padding: .75rem 1rem;
+      z-index: 200;
+    }
+    .saltar-contenido:focus { left: 0; }
+
+    /* Título y subtítulo de cada sección */
+    .seccion { padding: 5rem 0; }
+    .seccion__titulo {
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      font-weight: 900;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      max-width: 18ch;
+    }
+    .seccion__intro {
+      color: var(--gris-medio);
+      max-width: 60ch;
+      margin-bottom: 3rem;
+    }
+
+    /* ==========================================================
+       3. BOTONES
+       ========================================================== */
+    .boton {
+      display: inline-block;
+      padding: .9rem 1.8rem;
+      border-radius: 999px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 2px solid transparent;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background .2s, color .2s, border-color .2s;
+    }
+    .boton--rojo   { background: var(--carmesi); color: var(--blanco); }
+    .boton--rojo:hover { background: #9e0c24; }
+    .boton--blanco { background: var(--blanco); color: var(--negro); }
+    .boton--blanco:hover { background: var(--gris-claro); }
+    .boton--borde  { border-color: var(--blanco); color: var(--blanco); }
+    .boton--borde:hover { background: var(--blanco); color: var(--negro); }
+
+    /* ==========================================================
+       4. ENCABEZADO Y NAVEGACIÓN
+       ========================================================== */
+    .encabezado {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--negro);
+      color: var(--blanco);
+      border-bottom: 3px solid var(--carmesi);
+    }
+    .encabezado__interior {
+      display: flex;
+      flex-wrap: wrap;            /* En celulares el menú baja a otra fila */
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem 1.5rem;
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      text-decoration: none;
+      font-weight: 900;
+      font-size: 1.5rem;
+      letter-spacing: .02em;
+    }
+    .logo svg { width: 56px; fill: var(--blanco); }
+
+    .menu__lista {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .25rem 1.5rem;
+    }
+    .menu__enlace {
+      display: inline-block;
+      padding: .4rem 0;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+    }
+    .menu__enlace:hover { border-bottom-color: var(--carmesi-claro); }
+
+    /* ==========================================================
+       5. HÉROE (portada)
+       ========================================================== */
+    .heroe {
+      position: relative;
+      overflow: hidden;
+      background: var(--negro);
+      color: var(--blanco);
+      padding: 6rem 0 7rem;
+    }
+    /* Swoosh gigante decorativo al fondo */
+    .heroe__decoracion {
+      position: absolute;
+      right: -8%;
+      bottom: -6%;
+      width: min(75vw, 820px);
+      fill: var(--carmesi);
+      opacity: .95;
+    }
+    .heroe__contenido { position: relative; }  /* Queda por encima de la decoración */
+    .heroe__titulo {
+      font-size: clamp(3.5rem, 13vw, 9.5rem);
+      font-weight: 900;
+      line-height: .9;
+      letter-spacing: -0.05em;
+      margin-bottom: 1.5rem;
+    }
+    .heroe__texto {
+      max-width: 46ch;
+      font-size: 1.15rem;
+      margin-bottom: 2rem;
+    }
+    .heroe__botones { display: flex; flex-wrap: wrap; gap: 1rem; }
+
+    /* ==========================================================
+       6. PRESENTACIÓN DE LA EMPRESA
+       ========================================================== */
+    .empresa__rejilla {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .empresa__texto p { margin-bottom: 1rem; max-width: 62ch; }
+
+    .datos {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      list-style: none;
+    }
+    .dato {
+      background: var(--gris-claro);
+      border-left: 5px solid var(--carmesi);
+      border-radius: var(--radio);
+      padding: 1.25rem;
+    }
+    .dato__valor { display: block; font-size: 1.6rem; font-weight: 900; line-height: 1.1; }
+    .dato__texto { color: var(--gris-medio); font-size: .95rem; }
+
+    /* ==========================================================
+       7. PRODUCTOS (tarjetas)
+       ========================================================== */
+    .productos { background: var(--gris-claro); }
+
+    .tarjetas {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .tarjeta {
+      background: var(--blanco);
+      border-radius: var(--radio);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 1px 0 rgba(0,0,0,.08);
+    }
+    .tarjeta__imagen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 190px;
+      background: var(--negro);
+    }
+    .tarjeta__imagen--rojo   { background: var(--carmesi); }
+    .tarjeta__imagen--gris   { background: #d9d9d9; }
+    .tarjeta__imagen svg {
+      width: 90px; height: 90px;
+      fill: none;
+      stroke: var(--blanco);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .tarjeta__imagen--gris svg { stroke: var(--negro); }
+
+    .tarjeta__cuerpo { padding: 1.5rem; display: flex; flex-direction: column; gap: .6rem; flex: 1; }
+    .tarjeta__titulo { font-size: 1.35rem; font-weight: 800; letter-spacing: -0.01em; }
+    .tarjeta__texto { color: var(--gris-medio); flex: 1; }
+    .tarjeta__enlace { font-weight: 700; color: var(--carmesi); text-decoration: underline; text-underline-offset: 4px; }
+    .tarjeta__enlace:hover { color: var(--negro); }
+
+    .productos__subtitulo { font-size: 1.5rem; font-weight: 800; margin: 3.5rem 0 1.25rem; }
+
+    /* ==========================================================
+       8. VENTAJAS COMPETITIVAS
+       ========================================================== */
+    .ventajas { background: var(--negro); color: var(--blanco); }
+    .ventajas .seccion__intro { color: #d0d0d0; }
+    .ventajas .seccion__titulo { color: var(--blanco); }
+
+    .ventaja {
+      border: 1px solid #3a3a3a;
+      border-top: 4px solid var(--carmesi);
+      border-radius: var(--radio);
+      padding: 1.75rem;
+    }
+    .ventaja__icono { width: 44px; height: 44px; margin-bottom: 1rem; fill: none; stroke: var(--carmesi-claro); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .ventaja__titulo { font-size: 1.25rem; font-weight: 800; margin-bottom: .4rem; }
+    .ventaja__texto { color: #d0d0d0; }
+
+    /* ==========================================================
+       9. CONTACTO
+       ========================================================== */
+    .contacto__rejilla { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+    .contacto__lista { list-style: none; display: grid; gap: 1rem; margin-top: 1.5rem; }
+    .contacto__item { display: flex; gap: .9rem; align-items: flex-start; }
+    .contacto__item svg { width: 26px; height: 26px; flex-shrink: 0; fill: none; stroke: var(--carmesi); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 2px; }
+
+    .formulario {
+      background: var(--gris-claro);
+      padding: 2rem;
+      border-radius: var(--radio);
+      display: grid;
+      gap: 1.1rem;
+    }
+    .formulario__aviso {
+      background: #fff4d6;
+      border-left: 5px solid #b45f06;
+      padding: .8rem 1rem;
+      font-size: .95rem;
+      border-radius: 4px;
+    }
+    .campo { display: grid; gap: .35rem; }
+    .campo label { font-weight: 700; }
+    .campo input, .campo select, .campo textarea {
+      font: inherit;
+      padding: .75rem;
+      border: 2px solid #8a8a8a;
+      border-radius: var(--radio);
+      background: var(--blanco);
+    }
+    .campo input:focus, .campo select:focus, .campo textarea:focus { border-color: var(--carmesi); }
+
+    /* ==========================================================
+       10. PIE DE PÁGINA
+       ========================================================== */
+    .pie { background: var(--negro); color: #d0d0d0; padding: 3rem 0 2rem; border-top: 3px solid var(--carmesi); }
+    .pie__rejilla { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 2rem; }
+    .pie__titulo { color: var(--blanco); font-size: 1.05rem; margin-bottom: .75rem; }
+    .pie__lista { list-style: none; display: grid; gap: .4rem; }
+    .pie__lista a { text-decoration: none; }
+    .pie__lista a:hover { color: var(--blanco); text-decoration: underline; }
+    .pie__legal { border-top: 1px solid #333; padding-top: 1.25rem; font-size: .9rem; }
+
+    /* ==========================================================
+       11. DISEÑO ADAPTABLE (tabletas y computadores)
+       ========================================================== */
+    /* Tabletas: desde 700px */
+    @media (min-width: 700px) {
+      .tarjetas--tres { grid-template-columns: repeat(2, 1fr); }
+      .tarjetas--cuatro { grid-template-columns: repeat(2, 1fr); }
+      .pie__rejilla { grid-template-columns: repeat(2, 1fr); }
+    }
+    /* Computadores: desde 1000px */
+    @media (min-width: 1000px) {
+      .empresa__rejilla { grid-template-columns: 1.2fr 1fr; align-items: center; }
+      .tarjetas--tres { grid-template-columns: repeat(3, 1fr); }
+      .tarjetas--cuatro { grid-template-columns: repeat(4, 1fr); }
+      .contacto__rejilla { grid-template-columns: 1fr 1.1fr; }
+      .pie__rejilla { grid-template-columns: 2fr 1fr 1fr; }
+    }
+
+    /* Respeta a quienes desactivan las animaciones en su sistema */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      * { transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Enlace de accesibilidad: aparece al presionar Tab -->
+  <a class="saltar-contenido" href="#contenido">Saltar al contenido principal</a>
+
+  <!-- ========== ENCABEZADO ========== -->
+  <header class="encabezado">
+    <div class="contenedor encabezado__interior">
+
+      <!-- Logotipo: swoosh ilustrativo en SVG + nombre -->
+      <a class="logo" href="#inicio" aria-label="Nike, ir al inicio">
+        <svg viewBox="0 0 100 40" aria-hidden="true" focusable="false">
+          <path d="M98 2 C70 17 42 28 24 28 C14 28 7 24 2 17 C4 33 14 40 28 38 C52 35 78 18 98 2Z"/>
+        </svg>
+        <span>NIKE</span>
+      </a>
+
+      <!-- Menú de navegación: cada enlace apunta al id de una sección -->
+      <nav class="menu" aria-label="Navegación principal">
+        <ul class="menu__lista">
+          <li><a class="menu__enlace" href="#inicio">Inicio</a></li>
+          <li><a class="menu__enlace" href="#empresa">Empresa</a></li>
+          <li><a class="menu__enlace" href="#productos">Productos</a></li>
+          <li><a class="menu__enlace" href="#ventajas">Ventajas</a></li>
+          <li><a class="menu__enlace" href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ========== PORTADA ========== -->
+    <section class="heroe" id="inicio" aria-labelledby="titulo-heroe">
+      <svg class="heroe__decoracion" viewBox="0 0 100 40" aria-hidden="true" focusable="false">
+        <path d="M98 2 C70 17 42 28 24 28 C14 28 7 24 2 17 C4 33 14 40 28 38 C52 35 78 18 98 2Z"/>
+      </svg>
+
+      <div class="contenedor heroe__contenido">
+        <h1 class="heroe__titulo" id="titulo-heroe">Just<br>Do It.</h1>
+        <p class="heroe__texto">
+          Calzado, ropa y accesorios para quienes entrenan, juegan y se mueven todos los días.
+          Encuentra tu próximo equipo en la tienda oficial.
+        </p>
+        <div class="heroe__botones">
+          <a class="boton boton--blanco" href="#productos">Ver productos</a>
+          <a class="boton boton--borde" href="#contacto">Contáctanos</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== PRESENTACIÓN DE LA EMPRESA ========== -->
+    <section class="seccion empresa" id="empresa" aria-labelledby="titulo-empresa">
+      <div class="contenedor empresa__rejilla">
+
+        <div class="empresa__texto">
+          <h2 class="seccion__titulo" id="titulo-empresa">Equipamiento para cada deportista</h2>
+          <p>
+            Nike diseña, desarrolla, fabrica y comercializa equipamiento deportivo en todo el mundo.
+            Su propósito es llevar inspiración e innovación a cada persona que practica deporte.
+          </p>
+          <p>
+            Desde el running y el fútbol hasta el entrenamiento diario y el estilo urbano,
+            nuestras colecciones combinan tecnología, comodidad y diseño.
+          </p>
+          <p>(Contenido demostrativo creado para un ejercicio de diseño web.)</p>
+        </div>
+
+        <!-- Datos clave en tarjetas pequeñas -->
+        <ul class="datos">
+          <li class="dato"><span class="dato__valor">Global</span><span class="dato__texto">Presencia en todo el mundo</span></li>
+          <li class="dato"><span class="dato__valor">3 líneas</span><span class="dato__texto">Hombre, mujer y niños</span></li>
+          <li class="dato"><span class="dato__valor">Innovación</span><span class="dato__texto">Diseño y tecnología deportiva</span></li>
+          <li class="dato"><span class="dato__valor">Tienda oficial</span><span class="dato__texto">Compra directa y segura</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========== PRODUCTOS ========== -->
+    <section class="seccion productos" id="productos" aria-labelledby="titulo-productos">
+      <div class="contenedor">
+        <h2 class="seccion__titulo" id="titulo-productos">Elige tu línea</h2>
+        <p class="seccion__intro">
+          Todos los productos están disponibles en la tienda oficial. Escoge por categoría y encuentra ropa, calzado y accesorios.
+        </p>
+
+        <!-- Tarjetas por público -->
+        <div class="tarjetas tarjetas--tres">
+
+          <article class="tarjeta">
+            <div class="tarjeta__imagen" role="img" aria-label="Icono de calzado deportivo">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 17h20v-2.2c0-.9-.6-1.600-1.400-1.800l-4.100-1-2.700-4.200-3.200 2.800-3.200-1.200L2 15z"/><path d="M2 17v1h20v-1M10 10l1.500 2M13 9.500l1.500 2"/></svg>
+            </div>
+            <div class="tarjeta__cuerpo">
+              <h3 class="tarjeta__titulo">Hombre</h3>
+              <p class="tarjeta__texto">Zapatillas, camisetas y conjuntos para correr, entrenar y jugar.</p>
+              <a class="tarjeta__enlace" href="#contacto">Consultar colección de hombre</a>
+            </div>
+          </article>
+
+          <article class="tarjeta">
+            <div class="tarjeta__imagen tarjeta__imagen--rojo" role="img" aria-label="Icono de camiseta deportiva">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3 3 6l2 4 3-1v12h8V9l3 1 2-4-5-3c-1 2-2 3-4 3S9 5 8 3z"/></svg>
+            </div>
+            <div class="tarjeta__cuerpo">
+              <h3 class="tarjeta__titulo">Mujer</h3>
+              <p class="tarjeta__texto">Leggings, tops y calzado diseñados para moverte con libertad.</p>
+              <a class="tarjeta__enlace" href="#contacto">Consultar colección de mujer</a>
+            </div>
+          </article>
+
+          <article class="tarjeta">
+            <div class="tarjeta__imagen tarjeta__imagen--gris" role="img" aria-label="Icono de mochila">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8h12l1 13H5L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2M9 14h6"/></svg>
+            </div>
+            <div class="tarjeta__cuerpo">
+              <h3 class="tarjeta__titulo">Niños</h3>
+              <p class="tarjeta__texto">Ropa resistente y calzado cómodo para sus primeros partidos y juegos.</p>
+              <a class="tarjeta__enlace" href="#contacto">Consultar colección infantil</a>
+            </div>
+          </article>
+        </div>
+
+        <!-- Tarjetas por tipo de producto -->
+        <h3 class="productos__subtitulo">Compra por tipo de producto</h3>
+        <div class="tarjetas tarjetas--cuatro">
+
+          <article class="tarjeta">
+            <div class="tarjeta__cuerpo">
+              <h4 class="tarjeta__titulo">Calzado</h4>
+              <p class="tarjeta__texto">Running, fútbol, baloncesto y estilo de calle.</p>
+            </div>
+          </article>
+
+          <article class="tarjeta">
+            <div class="tarjeta__cuerpo">
+              <h4 class="tarjeta__titulo">Ropa</h4>
+              <p class="tarjeta__texto">Camisetas, sudaderas, pantalonetas y chaquetas.</p>
+            </div>
+          </article>
+
+          <article class="tarjeta">
+            <div class="tarjeta__cuerpo">
+              <h4 class="tarjeta__titulo">Accesorios</h4>
+              <p class="tarjeta__texto">Gorras, mochilas, medias y botellas.</p>
+            </div>
+          </article>
+
+          <article class="tarjeta">
+            <div class="tarjeta__cuerpo">
+              <h4 class="tarjeta__titulo">Tienda oficial</h4>
+              <p class="tarjeta__texto">Lanzamientos y productos originales en un solo lugar.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== VENTAJAS COMPETITIVAS ========== -->
+    <section class="seccion ventajas" id="ventajas" aria-labelledby="titulo-ventajas">
+      <div class="contenedor">
+        <h2 class="seccion__titulo" id="titulo-ventajas">Por qué elegir Nike</h2>
+        <p class="seccion__intro">Lo que nos diferencia en el mercado deportivo.</p>
+
+        <div class="tarjetas tarjetas--cuatro">
+
+          <article class="ventaja">
+            <svg class="ventaja__icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2v4M12 18v4M4.900 4.900l2.800 2.800M16.300 16.300l2.800 2.800M2 12h4M18 12h4M4.900 19.100l2.800-2.800M16.300 7.700l2.800-2.800"/></svg>
+            <h3 class="ventaja__titulo">Innovación</h3>
+            <p class="ventaja__texto">Materiales y tecnologías pensados para mejorar tu rendimiento.</p>
+          </article>
+
+          <article class="ventaja">
+            <svg class="ventaja__icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20"/></svg>
+            <h3 class="ventaja__titulo">Alcance global</h3>
+            <p class="ventaja__texto">Una marca reconocida en todo el mundo, presente en el deporte y la cultura.</p>
+          </article>
+
+          <article class="ventaja">
+            <svg class="ventaja__icono" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6.500 7 .8-5.200 4.800 1.500 7L12 17.500 5.700 21l1.500-7L2 9.300l7-.8z"/></svg>
+            <h3 class="ventaja__titulo">Calidad y diseño</h3>
+            <p class="ventaja__texto">Productos duraderos con estilo para el deporte y el día a día.</p>
+          </article>
+
+          <article class="ventaja">
+            <svg class="ventaja__icono" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.500"/><path d="M3 20c0-3.500 2.500-6 6-6s6 2.500 6 6M15 14.500c3 0 6 1.500 6 5.500"/></svg>
+            <h3 class="ventaja__titulo">Para toda la familia</h3>
+            <p class="ventaja__texto">Líneas para hombre, mujer y niños en un mismo lugar.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACTO ========== -->
+    <section class="seccion contacto" id="contacto" aria-labelledby="titulo-contacto">
+      <div class="contenedor contacto__rejilla">
+
+        <div>
+          <h2 class="seccion__titulo" id="titulo-contacto">Hablemos</h2>
+          <p>¿Tienes dudas sobre tallas, productos o pedidos? Escríbenos.</p>
+
+          <!-- Datos de ejemplo (no reales) -->
+          <ul class="contacto__lista">
+            <li class="contacto__item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-6.500 7-12a7 7 0 0 0-14 0c0 5.500 7 12 7 12z"/><circle cx="12" cy="10" r="2.500"/></svg>
+              <span>Dirección de ejemplo: Calle 123 #45-67, Ciudad Demo</span>
+            </li>
+            <li class="contacto__item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h4l2 5-2.500 1.500a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2z"/></svg>
+              <span>Teléfono de ejemplo: 000 000 0000</span>
+            </li>
+            <li class="contacto__item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+              <span>Correo de ejemplo: contacto@ejemplo.com</span>
+            </li>
+            <li class="contacto__item">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span>Horario de ejemplo: lunes a sábado, 9:00 a. m. a 7:00 p. m.</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Formulario DEMOSTRATIVO -->
+        <form class="formulario" action="#" method="post"
+              onsubmit="event.preventDefault(); alert('Formulario demostrativo: no se envió ninguna información.');">
+          <p class="formulario__aviso">
+            <strong>Formulario demostrativo.</strong> No envía información; para recibir mensajes se necesita una integración adicional (por ejemplo, un servicio de correo o un servidor).
+          </p>
+
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+          </div>
+
+          <div class="campo">
+            <label for="correo">Correo electrónico</label>
+            <input type="email" id="correo" name="correo" autocomplete="email" required>
+          </div>
+
+          <div class="campo">
+            <label for="tema">Tema</label>
+            <select id="tema" name="tema">
+              <option>Información de productos</option>
+              <option>Tallas y cambios</option>
+              <option>Estado de un pedido</option>
+              <option>Otro</option>
+            </select>
+          </div>
+
+          <div class="campo">
+            <label for="mensaje">Mensaje</label>
+            <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+          </div>
+
+          <button class="boton boton--rojo" type="submit">Enviar mensaje</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== PIE DE PÁGINA ========== -->
+  <footer class="pie">
+    <div class="contenedor">
+      <div class="pie__rejilla">
+
+        <div>
+          <h2 class="pie__titulo">NIKE</h2>
+          <p>Equipamiento deportivo para hombre, mujer y niños. Página de ejemplo con fines educativos.</p>
+        </div>
+
+        <nav aria-label="Enlaces del pie de página">
+          <h2 class="pie__titulo">Navegación</h2>
+          <ul class="pie__lista">
+            <li><a href="#inicio">Inicio</a></li>
+            <li><a href="#empresa">Empresa</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#ventajas">Ventajas</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+          </ul>
+        </nav>
+
+        <div>
+          <h2 class="pie__titulo">Categorías</h2>
+          <ul class="pie__lista">
+            <li>Hombre</li>
+            <li>Mujer</li>
+            <li>Niños</li>
+            <li>Accesorios</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="pie__legal">
+        Sitio demostrativo sin fines comerciales. Nike y su logotipo son marcas de sus respectivos propietarios; el swoosh de esta página es una ilustración simplificada.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
